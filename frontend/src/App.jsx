@@ -7,6 +7,14 @@ import BrowseJobs from "./pages/candidate/BrowseJobs";
 import JobDetails from "./pages/candidate/JobDetails";
 import UploadResume from "./pages/candidate/UploadResume";
 import Applications from "./pages/candidate/Applications";
+import JobApplicants from "./pages/recruiter/JobApplicants"
+
+import RecruiterLogin from "./pages/recruiter/RecruiterLogin"
+import RecruiterDashboard from "./pages/recruiter/Dashboard"
+import Jobs from "./pages/recruiter/Jobs"
+
+import CreateJob from "./pages/recruiter/CreateJob"
+
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import CandidateLayout from "./layouts/CandidateLayout";
@@ -77,6 +85,30 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route 
+          path="/recruiter/login" 
+          element={<RecruiterLogin/>  
+          } 
+        />
+        <Route 
+          path="/recruiter/dashboard" 
+          element={<RecruiterDashboard/>
+          } 
+        /> 
+        <Route 
+          path="/recruiter/jobs" 
+          element={<Jobs/>
+          } 
+        />
+
+        <Route path="/recruiter/create-job"
+               element={<CreateJob />}
+               />
+        
+
+        <Route path="/recruiter/job/:id" element={<JobApplicants/>}/>
+
+
 
       </Routes>
 

@@ -1,47 +1,69 @@
-import { useState } from "react";
-import api from "../../services/api";
+import { useEffect, useState } from "react"
+import api from "../../services/api"
 
-export default function Applications() {
+export default function Applications(){
 
-  const [email, setEmail] = useState("");
-  const [applications, setApplications] = useState([]);
+  const [applications,setApplications] = useState([])
 
   const fetchApplications = async () => {
-    const res = await api.get(
-      `/candidate/applications?email=${email}`
-    );
-    setApplications(res.data);
-  };
 
-  return (
+    const email = localStorage.getItem("user_email")
+
+    const res = await api.get(`/applications/candidate/${email}`)
+
+    console.log(res.data)
+
+    setApplications(res.data)
+
+  }
+
+  useEffect(()=>{
+    fetchApplications()
+  },[])
+
+  return(
+
     <div>
 
       <h1 className="text-2xl font-bold mb-6">
         My Applications
       </h1>
 
-      <input
-        placeholder="Enter Email"
-        className="border p-2 rounded"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button
-        onClick={fetchApplications}
-        className="bg-indigo-600 text-white px-4 py-2 rounded ml-2"
-      >
-        Search
-      </button>
-
       <div className="mt-6 space-y-4">
-        {applications.map(app => (
-          <div key={app.id} className="bg-white p-4 rounded shadow">
+
+        {applications.length === 0 && (
+          <p>No applications found</p>
+        )}
+
+        {applications.map((app, index) => (
+
+          <div key={index} className="bg-white p-4 rounded shadow">
+
             <p><strong>Job:</strong> {app.job_title}</p>
-            <p><strong>Score:</strong> {app.score}%</p>
+
+            <p><strong>Department:</strong> {app.department}</p>
+
             <p><strong>Status:</strong> {app.status}</p>
+
+            <p><strong>Matched Skills:</strong> {app.skill_match}%</p>
+
+            <p><strong>Experience Match:</strong> {app.experience_match}%</p>
+
+            <p><strong>Missing Skills:</strong> {app.missing_skills}</p>
+
+            {app.score && (
+              <p><strong>Rank Score:</strong> {app.score}</p>
+            )}
+
           </div>
+
         ))}
+
       </div>
 
+
     </div>
-  );
+
+  )
+
 }

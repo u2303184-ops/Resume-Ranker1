@@ -8,7 +8,7 @@ export default function UploadResume(){
 
   const [file,setFile] = useState(null)
 
-  const email = localStorage.getItem("candidate_email")
+  const email = localStorage.getItem("user_email")
 
   const upload = async () => {
 

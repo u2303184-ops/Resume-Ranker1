@@ -49,6 +49,14 @@ export default function BrowseJobs() {
               {job.description}
             </p>
 
+            <p className="text-sm text-gray-700">
+             <b>Experience Required:</b> {job.experience_required} years
+            </p>
+
+            <p className="text-sm text-gray-700 mb-3">
+             <b>Skills Required:</b> {job.required_skills}
+            </p>
+
             <button
               onClick={() => navigate(`/candidate/jobs/${job.id}`)}
               className="bg-blue-600 text-white px-4 py-2 rounded"

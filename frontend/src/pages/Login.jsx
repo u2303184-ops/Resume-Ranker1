@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
+import api from "../services/api"
 
 export default function Login(){
 
@@ -8,25 +9,39 @@ export default function Login(){
 
   const navigate = useNavigate()
 
-  const login = () => {
+  const login = async () => {
 
-    const user = localStorage.getItem("user_"+email)
-
-    if(!user){
-      alert("User not found")
+    if(!email || !password){
+      alert("Fill all fields")
       return
     }
 
-    const parsed = JSON.parse(user)
+    try{
 
-    if(parsed.password !== password){
-      alert("Wrong password")
-      return
+      const res = await api.post("/auth/login", {email: email, password: password})
+
+      console.log(res.data)
+
+      const role = res.data.role
+
+      // Save logged in user
+      localStorage.setItem("user_email", email)
+      localStorage.setItem("user_role", role)
+
+      // Redirect based on role
+      if(role === "candidate"){
+        navigate("/candidate/dashboard")
+      }
+
+      if(role === "recruiter"){
+        navigate("/recruiter/dashboard")
+      }
+
+    }catch(err){
+
+      alert("Invalid credentials")
+
     }
-
-    localStorage.setItem("candidate_email", email)
-
-    navigate("/candidate/dashboard")
 
   }
 
@@ -34,7 +49,7 @@ export default function Login(){
 
     <div style={{padding:40}}>
 
-      <h2>Candidate Login</h2>
+      <h2>Login</h2>
 
       <input
         placeholder="Email"

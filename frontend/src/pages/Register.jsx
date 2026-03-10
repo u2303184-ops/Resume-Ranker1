@@ -1,30 +1,34 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import api from "../services/api"
 
 export default function Register(){
 
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
+  const [role,setRole] = useState("candidate")
 
   const navigate = useNavigate()
 
-  const register = () => {
+  const register = async () => {
 
     if(!email || !password){
       alert("Fill all fields")
       return
     }
 
-    const user = {
-      email,
-      password
+    try{
+
+      await api.post("/auth/signup", {email, password , role})
+      alert("Registration Successful")
+
+      navigate("/login")
+
+    }catch(err){
+
+      alert(err.response?.data?.detail || "Registration failed")
+
     }
-
-    localStorage.setItem("user_"+email, JSON.stringify(user))
-
-    alert("Registration Successful")
-
-    navigate("/login")
 
   }
 
@@ -32,7 +36,7 @@ export default function Register(){
 
     <div style={{padding:40}}>
 
-      <h2>Candidate Registration</h2>
+      <h2>Register</h2>
 
       <input
         placeholder="Email"
@@ -49,6 +53,15 @@ export default function Register(){
 
       <br/><br/>
 
+      <select
+        onChange={(e)=>setRole(e.target.value)}
+      >
+        <option value="candidate">Candidate</option>
+        <option value="recruiter">Recruiter</option>
+      </select>
+
+      <br/><br/>
+
       <button onClick={register}>
         Register
       </button>
@@ -58,3 +71,4 @@ export default function Register(){
   )
 
 }
+
