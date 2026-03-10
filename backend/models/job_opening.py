@@ -21,3 +21,5 @@ class JobOpening(Base):
     required_skills = Column(Text)
 
     experience_required = Column(Integer)
+
+    recruiter_email = Column(String)

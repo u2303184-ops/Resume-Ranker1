@@ -34,7 +34,9 @@ def get_candidate_applications(email: str, db: Session = Depends(get_db)):
             "missing_skills": a.missing_skills,
 
             # ranking visible only after decision
-            "score": a.score if a.status != "pending" else None
+            "score": a.score if a.status != "pending" else None,
+
+            "llm_feedback" : a.llm_feedback
         })
 
     return result

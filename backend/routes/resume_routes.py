@@ -13,6 +13,7 @@ from models.application import Application
 from services.parser import parse_resume
 from services.ranker import rank_resume
 from services.rag_explainer import generate_rag_explanation
+from services.llm_advisor import generate_llm_advice
 
 router = APIRouter()
 
@@ -52,6 +53,8 @@ def upload_resume(
 
     ranking = rank_resume(parsed, job)
 
+    llm_feedback = generate_llm_advice(parsed,job,ranking)
+
     application = Application(
     candidate_email=email,
     job_id=opening_id,
@@ -59,7 +62,8 @@ def upload_resume(
     skill_match=ranking["skill_match"],
     experience_match=ranking["experience_match"],
     missing_skills=ranking["missing_skills"],
-    status="pending"
+    status="pending",
+    llm_feedback=llm_feedback
 )
 
     db.add(application)

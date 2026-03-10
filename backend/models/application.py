@@ -21,3 +21,5 @@ class Application(Base):
     experience_match = Column(Integer, nullable=True)
 
     missing_skills = Column(String, nullable=True)
+
+    llm_feedback = Column(String)

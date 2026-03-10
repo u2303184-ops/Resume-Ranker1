@@ -55,6 +55,22 @@ export default function Applications(){
               <p><strong>Rank Score:</strong> {app.score}</p>
             )}
 
+            {app.llm_feedback && (
+
+            <div style={{
+            border:"1px solid #ddd",
+            padding:12,
+            marginTop:10
+            }}>
+
+            <b>AI Resume Advice</b>
+
+            <p>{app.llm_feedback}</p>
+
+            </div>
+
+            )}
+
           </div>
 
         ))}

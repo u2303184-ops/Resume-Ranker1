@@ -16,7 +16,9 @@ loadJobs()
 
 const loadJobs = async()=>{
 
-const res = await api.get("/openings/all")
+const email = localStorage.getItem("user_email")    
+
+const res = await api.get(`/recruiter/jobs/${email}`)
 
 setJobs(res.data)
 

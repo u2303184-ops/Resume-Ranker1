@@ -9,6 +9,8 @@ export default function CreateJob(){
   const [skills,setSkills] = useState("")
   const [experience,setExperience] = useState("")
 
+  const email = localStorage.getItem("user_email")
+
   const createJob = async () => {
 
     try {
@@ -20,7 +22,8 @@ export default function CreateJob(){
           department: department,
           description: description,
           required_skills: skills.split(","),
-          experience_required: parseInt(experience)
+          experience_required: parseInt(experience),
+          recruiter_email: email
         },
         {
           headers: {

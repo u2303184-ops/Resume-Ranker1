@@ -53,7 +53,8 @@ def add_opening(opening: dict, db: Session = Depends(get_db)):
         required_skills=json.dumps([s.strip().lower() for s in required_skills.split(",")]),
         experience_required=opening.get(
             "experience_required", 0
-        )
+        ),
+        recruiter_email=opening.get("recruiter_email")
     )
 
     db.add(new_opening)

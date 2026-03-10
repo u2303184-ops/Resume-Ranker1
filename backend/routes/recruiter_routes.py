@@ -71,6 +71,16 @@ def send_results(job_id: int, db: Session = Depends(get_db)):
 
     return {"message": "Results sent"}
 
+@router.get("/jobs/{email}")
+def get_recruiter_jobs(email:str, db:Session=Depends(get_db)):
+
+    jobs = db.query(JobOpening).filter(
+        JobOpening.recruiter_email == email
+    ).all()
+
+    return jobs
+
+
 @router.put("/update_status/{id}")
 def update_status(
     id: int,
