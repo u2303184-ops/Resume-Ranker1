@@ -101,4 +101,4 @@ def view_resume(email:str, db: Session = Depends(get_db)):
     ).first()
     
     file_path = os.path.join(UPLOAD_BASE,resume.filename)
-    return FileResponse(resume.file_path)
+    return FileResponse(file_path)

@@ -25,7 +25,7 @@ export default function Login(){
       const role = res.data.role
 
       // Save logged in user
-      localStorage.setItem("user_email", email)
+      localStorage.setItem(role + "_email", email)
       localStorage.setItem("user_role", role)
 
       // Redirect based on role
@@ -47,34 +47,45 @@ export default function Login(){
 
   return(
 
-    <div style={{padding:40}}>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-200 via-purple-200 to-blue-200 flex items-center justify-center">
 
-      <h2>Login</h2>
+    <div className="bg-white shadow-2xl rounded-xl p-10 w-[420px]">
 
-      <input
-        placeholder="Email"
-        onChange={(e)=>setEmail(e.target.value)}
-      />
+    <h2 className="text-3xl font-bold text-indigo-700 text-center mb-6">
+    Login
+    </h2>
 
-      <br/><br/>
+    <input
+    placeholder="Email"
+    onChange={(e)=>setEmail(e.target.value)}
+    className="border p-3 rounded-lg w-full mb-4"
+    />
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e)=>setPassword(e.target.value)}
-      />
+    <input
+    type="password"
+    placeholder="Password"
+    onChange={(e)=>setPassword(e.target.value)}
+    className="border p-3 rounded-lg w-full mb-6"
+    />
 
-      <br/><br/>
+    <button
+    onClick={login}
+    className="bg-indigo-600 hover:bg-indigo-700 text-white w-full py-3 rounded-lg transition"
+    >
+    Login
+    </button>
 
-      <button onClick={login}>
-        Login
-      </button>
+    <p className="text-center text-gray-600 mt-6">
+    New user? 
+    <Link
+    to="/register"
+    className="text-indigo-600 font-semibold ml-1"
+    >
+    Register
+    </Link>
+    </p>
 
-      <br/><br/>
-
-      <p>
-        New user? <Link to="/register">Register</Link>
-      </p>
+    </div>
 
     </div>
 

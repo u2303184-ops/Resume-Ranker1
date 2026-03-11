@@ -43,27 +43,35 @@ export default function JobDetails() {
   }
 
   return (
-    <div>
 
-      <h1 className="text-3xl font-bold mb-4">
-        {job.title}
-      </h1>
-
-      <p className="text-gray-600 mb-2">
-        {job.department}
-      </p>
-
-      <p className="mb-6">
-        {job.description}
-      </p>
-
-      <button
-        onClick={() => navigate(`/candidate/apply/${job.id}`)}
-        className="bg-green-600 text-white px-6 py-2 rounded"
-      >
-        Apply Now
-      </button>
-
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 flex justify-center items-center">
+    
+    <div className="bg-white shadow-2xl rounded-xl p-10 w-[600px]">
+    
+    <h1 className="text-4xl font-bold text-indigo-700 mb-4">
+    {job.title}
+    </h1>
+    
+    <p className="text-gray-500 text-lg mb-2">
+    Department: {job.department}
+    </p>
+    
+    <hr className="my-4"/>
+    
+    <p className="text-gray-700 mb-6 leading-relaxed">
+    {job.description}
+    </p>
+    
+    <button
+    onClick={()=>navigate(`/candidate/apply/${job.id}`)}
+    className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg text-lg transition"
+    >
+    Apply Now
+    </button>
+    
     </div>
-  );
+    
+    </div>
+    
+    );
 }

@@ -9,7 +9,7 @@ export default function CreateJob(){
   const [skills,setSkills] = useState("")
   const [experience,setExperience] = useState("")
 
-  const email = localStorage.getItem("user_email")
+  const email = localStorage.getItem("recruiter_email")
 
   const createJob = async () => {
 
@@ -46,9 +46,13 @@ export default function CreateJob(){
   }
   return(
 
-    <div style={{padding:40}}>
+    <div className="flex justify-center items-center min-h-screen">
 
-      <h2>Create Job Opening</h2>
+    <div className="bg-white p-8 rounded-xl shadow-xl w-[420px]">
+
+      <h2 className="text-3xl font-bold text-purple-700 mb-6">
+      Create Job Opening
+      </h2>
 
       <input placeholder="Title" onChange={(e)=>setTitle(e.target.value)} />
       <br/><br/>
@@ -65,9 +69,11 @@ export default function CreateJob(){
       <input placeholder="Experience Required" onChange={(e)=>setExperience(e.target.value)} />
       <br/><br/>
 
-      <button onClick={createJob}>
+      <button className="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700 transition" onClick={createJob}>
         Create Job
       </button>
+
+    </div>
 
     </div>
 

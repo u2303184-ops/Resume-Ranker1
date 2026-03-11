@@ -20,6 +20,8 @@ const loadRanking = async()=>{
 
 const res = await api.get(`/ranking/opening/${id}`)
 
+console.log("Ranking Data:", res.data)
+
 setCandidates(res.data)
 
 }
@@ -37,21 +39,22 @@ loadRanking()
 
 return(
 
-<div style={{padding:40}}>
+<div className="p-10">
 
-<h2>Applicants for Job {id}</h2>
+<h2 className="text-4xl font-bold text-indigo-700 mb-6">
+Applicants for Job {id}
+</h2>
+
 
 <hr/>
 
 {candidates.map((c,index)=>(
 
-<div key={index}
-style={{
-border:"1px solid gray",
-padding:15,
-marginBottom:20
-}}
+<div
+key={c.id}
+className="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-200 hover:shadow-2xl transition"
 >
+
 
 <b>Rank #{c.rank}</b>
 
@@ -82,6 +85,7 @@ Experience Match: {c.experience_match} %
 <br/><br/>
 
 <button
+className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition"
 onClick={()=>setSelected(c)}
 >
 Explain Match
@@ -90,23 +94,25 @@ Explain Match
 &nbsp;
 
 <button
-onClick={()=>window.open(`/resumes/view/${c.email}`)}
+className="bg-gray-500 text-white px-3 py-1 rounded-lg hover:bg-gray-600 transition"
+onClick={()=>window.open(`/resumes/view/${c.candidate_email}`)}
 >
 View Resume
 </button>
 
+
 &nbsp;
 
 <button
-onClick={()=>updateStatus(c.id,"accepted")}
+className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition"
+onClick={() => updateStatus(c.id, "accepted")}
 >
 Accept
 </button>
 
-&nbsp;
-
 <button
-onClick={()=>updateStatus(c.id,"rejected")}
+className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
+onClick={() => updateStatus(c.id, "rejected")}
 >
 Reject
 </button>
@@ -117,13 +123,12 @@ Reject
 
 {selected && (
 
-<div style={{
-border:"2px solid black",
-padding:20,
-marginTop:40
-}}>
+<div className="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-lg mt-10 shadow">
 
-<h3>AI Explanation</h3>
+
+<h3 className="text-2xl font-bold text-indigo-700 mb-4">
+🤖 AI Explanation
+</h3>
 
 <pre>
 {selected.rag_explanation}

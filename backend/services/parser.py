@@ -13,6 +13,7 @@ from nltk.tokenize import sent_tokenize
 from services.skill_ontology import SKILL_ONTOLOGY
 from services.semantic_engine import normalize_skills
 from services.embedding_matcher import detect_semantic_skills
+from datetime import datetime
 
 
 # ---------------------------------------------------
@@ -128,16 +129,91 @@ def extract_keyword_skills(sentences):
 # ---------------------------------------------------
 def extract_experience(text):
 
-    pattern = r'(\d+)\+?\s*(years|year)'
+    import re
+    from datetime import datetime
 
-    matches = re.findall(pattern, text)
+    text = text.lower()
+    current_year = datetime.now().year
+    current_month = datetime.now().month
 
-    if matches:
-        return max([int(m[0]) for m in matches])
+    # -----------------------------
+    # isolate EXPERIENCE section
+    # -----------------------------
+    if "experience" in text:
+        text = text.split("experience",1)[1]
 
-    return 0
+    for stop in [
+        "projects","education","skills",
+        "leadership","awards","references"
+    ]:
+        if stop in text:
+            text = text.split(stop,1)[0]
 
+    # -----------------------------
+    # month mapping
+    # -----------------------------
+    months = {
+        "jan":1,"feb":2,"mar":3,"apr":4,
+        "may":5,"jun":6,"jul":7,"aug":8,
+        "sep":9,"oct":10,"nov":11,"dec":12
+    }
 
+    total_months = 0
+    seen = set()
+
+    # -----------------------------
+    # Pattern 1: Month-Year ranges
+    # -----------------------------
+    pattern = r'(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s*(\d{4})\s*[-–]\s*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|present|current)[a-z]*\s*(\d{4})?'
+
+    matches = re.findall(pattern,text)
+
+    for sm,sy,em,ey in matches:
+
+        start_month = months[sm[:3]]
+        start_year = int(sy)
+
+        if em in ["present","current"]:
+            end_month = current_month
+            end_year = current_year
+        else:
+            end_month = months[em[:3]]
+            end_year = int(ey)
+
+        key=(start_year,start_month,end_year,end_month)
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+
+        months_worked=(end_year-start_year)*12+(end_month-start_month)
+
+        if months_worked>0:
+            total_months+=months_worked
+
+    # -----------------------------
+    # Pattern 2: Year-only ranges
+    # -----------------------------
+    pattern_year = r'(\d{4})\s*[-–]\s*(\d{4}|present|current)'
+
+    matches = re.findall(pattern_year,text)
+
+    for sy,ey in matches:
+
+        start_year = int(sy)
+
+        if ey in ["present","current"]:
+            end_year = current_year
+        else:
+            end_year = int(ey)
+
+        months_worked = (end_year-start_year)*12
+
+        if months_worked>0:
+            total_months += months_worked
+
+    return round(total_months/12,1)
 # ---------------------------------------------------
 # 8️⃣ MASTER PARSER
 # ---------------------------------------------------

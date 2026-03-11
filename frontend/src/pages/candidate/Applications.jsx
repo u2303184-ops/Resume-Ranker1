@@ -7,7 +7,7 @@ export default function Applications(){
 
   const fetchApplications = async () => {
 
-    const email = localStorage.getItem("user_email")
+    const email = localStorage.getItem("candidate_email")
 
     const res = await api.get(`/applications/candidate/${email}`)
 
@@ -23,9 +23,9 @@ export default function Applications(){
 
   return(
 
-    <div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-100 p-10">
 
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-4xl font-bold text-indigo-700 mb-10">
         My Applications
       </h1>
 
@@ -37,35 +37,52 @@ export default function Applications(){
 
         {applications.map((app, index) => (
 
-          <div key={index} className="bg-white p-4 rounded shadow">
+          <div key={index} className="bg-white shadow-xl rounded-xl p-6 mb-6 hover:shadow-2xl transition transform hover:-translate-y-1">
 
-            <p><strong>Job:</strong> {app.job_title}</p>
+            <p className="text-2xl font-semibold text-indigo-600 mb-2"><strong>Job:</strong> {app.job_title}</p>
 
-            <p><strong>Department:</strong> {app.department}</p>
+            <p className="text-gray-500 italic mb-2"><strong>Department:</strong> {app.department}</p>
 
-            <p><strong>Status:</strong> {app.status}</p>
+            <span
+                  className={
+                  `px-3 py-1 rounded-full text-white text-sm font-semibold ${
+                  app.status === "accepted"
+                  ? "bg-green-500"
+                  : app.status === "rejected"
+                  ? "bg-red-500"
+                  : "bg-yellow-500"
+                  }`
+                  }
+                  >
+                  {app.status}
+                  </span>
 
-            <p><strong>Matched Skills:</strong> {app.skill_match}%</p>
+            <p className="mt-3 font-medium">
+                          Skill Match: <span className="text-indigo-600">{app.skill_match}%</span>
+            </p>
 
-            <p><strong>Experience Match:</strong> {app.experience_match}%</p>
 
-            <p><strong>Missing Skills:</strong> {app.missing_skills}</p>
+            <p className="font-medium">
+            Experience Match: <span className="text-indigo-600">{app.experience_match}%</span>
+            </p>
+
+            <p className="mt-3 font-medium text-red-500"><strong>Missing Skills:</strong> {app.missing_skills}</p>
 
             {app.score && (
-              <p><strong>Rank Score:</strong> {app.score}</p>
+              <p  className="mt-2 font-semibold text-lg text-purple-700"><strong>Rank Score:</strong> {app.score}</p>
             )}
-
+            
             {app.llm_feedback && (
 
-            <div style={{
-            border:"1px solid #ddd",
-            padding:12,
-            marginTop:10
-            }}>
+            <div className="mt-6 bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded">
 
-            <b>AI Resume Advice</b>
+            <h4 className="text-lg font-semibold text-indigo-700 mb-2">
+            🤖 AI Resume Advice
+            </h4>
 
-            <p>{app.llm_feedback}</p>
+            <p className="text-gray-700 leading-relaxed">
+            {app.llm_feedback}
+            </p>
 
             </div>
 

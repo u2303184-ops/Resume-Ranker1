@@ -13,14 +13,31 @@ router = APIRouter()
 # -----------------------------------
 # GET APPLICANTS FOR JOB
 # -----------------------------------
+
+
 @router.get("/applicants/{job_id}")
 def get_applicants(job_id: int, db: Session = Depends(get_db)):
 
-    resumes = db.query(Resume).filter(
-        Resume.opening_id == job_id
+    applications = db.query(Application).filter(
+        Application.job_id == job_id
     ).all()
 
-    return resumes
+    result = []
+
+    for app in applications:
+
+        resume = db.query(Resume).filter(
+            Resume.id == app.resume_id
+        ).first()
+
+        result.append({
+            "id": app.id,
+            "candidate_email": app.candidate_email,
+            "status": app.status,
+            "resume": resume
+        })
+
+    return result
 
 
 # -----------------------------------

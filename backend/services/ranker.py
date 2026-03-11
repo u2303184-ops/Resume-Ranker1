@@ -90,9 +90,9 @@ def rank_resume(parsed_resume, job_opening):
         "skills", []
     )
 
-    experience_years = parsed_resume.get(
+    experience_years = float(parsed_resume.get(
         "experience", 0
-    )
+    ))
 
     # Normalize resume skills
     resume_skills = [

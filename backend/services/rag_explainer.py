@@ -30,12 +30,13 @@ def generate_rag_explanation(parsed_resume, job_opening, ranking):
             s.strip().lower()
             for s in required_skills.split(",")
         ]
+    required_skills = [s.lower().strip() for s in required_skills]    
 
     # ---------------------------------------------------
     # RESUME DATA
     # ---------------------------------------------------
 
-    resume_skills = parsed_resume.get("skills", [])
+    resume_skills = [s.lower().strip() for s in parsed_resume.get("skills", [])]
     experience = parsed_resume.get("experience", 0)
 
     matched_skills = [
